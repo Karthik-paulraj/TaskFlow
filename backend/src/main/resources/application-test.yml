@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:taskflow_test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+taskflow:
+  worker:
+    pool-size: 4
+  scheduler:
+    poll-interval-ms: 200
+    batch-size: 5
+    lease-timeout-seconds: 10
+    recovery-check-interval-ms: 2000
+  retry:
+    initial-delay-seconds: 1
+    max-delay-seconds: 5
+    jitter-factor: 0.0
+    default-max-attempts: 3

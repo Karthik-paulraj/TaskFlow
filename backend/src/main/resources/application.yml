@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: taskflow
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          batch_size: 25
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+server:
+  port: ${SERVER_PORT:8085}
+  shutdown: graceful
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+
+taskflow:
+  worker:
+    pool-size: ${TASKFLOW_WORKER_POOL_SIZE:6}
+    queue-capacity: 200
+  scheduler:
+    poll-interval-ms: ${TASKFLOW_SCHEDULER_POLL_INTERVAL_MS:500}
+    batch-size: ${TASKFLOW_SCHEDULER_BATCH_SIZE:10}
+    lease-timeout-seconds: ${TASKFLOW_SCHEDULER_LEASE_TIMEOUT_SECONDS:120}
+    recovery-check-interval-ms: 15000
+  retry:
+    initial-delay-seconds: ${TASKFLOW_RETRY_INITIAL_DELAY_SECONDS:2}
+    max-delay-seconds: ${TASKFLOW_RETRY_MAX_DELAY_SECONDS:60}
+    jitter-factor: 0.2
+    default-max-attempts: ${TASKFLOW_RETRY_MAX_ATTEMPTS:3}
